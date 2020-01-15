@@ -14,7 +14,6 @@ namespace PaymentGateway.Services
             PaymentResponse response=new PaymentResponse();
             Guid transactionIdentifier = Guid.NewGuid();
             string personName = "Mr David Peterson";
-
             response.Identifier = transactionIdentifier.ToString();
             response.Status = "SUCCESS";
             return response;

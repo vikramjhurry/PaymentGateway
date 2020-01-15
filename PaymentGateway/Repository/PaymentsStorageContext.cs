@@ -12,7 +12,6 @@ namespace PaymentGateway.Repository
         public DbSet<PaymentResponse> Payments { get; set; }
         public DbSet<PaymentRecord> PaymentRecords { get; set; }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=.\SQL2017DEV;Database=PaymentsDB;Trusted_Connection=True;");

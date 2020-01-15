@@ -21,6 +21,7 @@ namespace PaymentGateway.Controllers
         {
             _bankService = bankService;
         }
+
         // GET: api/Payment
         [HttpGet]
         public IEnumerable<PaymentRecord> Get()
