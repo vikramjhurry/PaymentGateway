@@ -1,0 +1,36 @@
+
+
+
+A simple encryption is done before transmitting payment to bank but can be improved to make it more complete.
+
+After being configured in startup.cs, MockBankProcessing of type IBankService is being injected into the controller. 
+The correct BankService can be used to replace the Mock when required.
+
+Data Models:
+PaymentInformation model is the information sent by merchant to PaymentGateway
+EncryptedPaymentInformation is the encrypted info sent to Bank.
+PaymentResponse is what bank sends back to Payment Gateway.
+PaymentRecord model is the response which is obtained when querying for a payment with identifier.
+
+SQL Server is used. Please first create a DB named PaymentsDB and reference the connection string in PaymentsStorageContext.cs
+Whenever a payment is made the card information and identifier and status from bank is saved in PaymentRecords table.
+
+Payment request is done via POST on "api/payment" with the following JSON object:
+{
+	"CardNo":"SSSS",
+	"Expiry":"10/2016",
+	"Amount":23.4,
+	"Currency":"MRU",
+	"CVV":"234" 
+}
+
+Requesting a payment information is done on "api/payment/{identifier}" via GET and returns this JSON object:
+{
+    "id": 2,
+    "identifier": "7284f824-9b72-4a83-950f-1136f3c7e669",
+    "cardNo": "SSSS",
+    "expiry": "10/2016",
+    "status": "SUCCESS"
+}
+
+Single Tier is used because of simplicity otherwise Multi-tier could to be used.

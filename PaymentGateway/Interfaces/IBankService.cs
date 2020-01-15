@@ -8,6 +8,6 @@ namespace PaymentGateway.Interfaces
 {
     public interface IBankService
     {
-        public string PaymentRequest(EncryptedPaymentInformation encryptedPaymentInformation);
+        public PaymentResponse PaymentRequest(EncryptedPaymentInformation encryptedPaymentInformation);
     }
 }

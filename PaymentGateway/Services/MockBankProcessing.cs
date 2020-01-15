@@ -9,12 +9,14 @@ namespace PaymentGateway.Services
 {
     public class MockBankProcessing : IBankService
     {
-        public string PaymentRequest(EncryptedPaymentInformation encryptedPaymentInformation)
+        public PaymentResponse PaymentRequest(EncryptedPaymentInformation encryptedPaymentInformation)
         {
-            string response;
+            PaymentResponse response=new PaymentResponse();
             Guid transactionIdentifier = Guid.NewGuid();
             string personName = "Mr David Peterson";
-            response = transactionIdentifier.ToString() + " - Payment transaction successful from " + personName;
+
+            response.Identifier = transactionIdentifier.ToString();
+            response.Status = "SUCCESS";
             return response;
         }
     }

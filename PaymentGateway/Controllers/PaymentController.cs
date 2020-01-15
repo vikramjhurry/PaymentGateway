@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PaymentGateway.Interfaces;
 using PaymentGateway.Models;
+using PaymentGateway.Repository;
 using PaymentGateway.Services;
 
 namespace PaymentGateway.Controllers
@@ -22,29 +23,50 @@ namespace PaymentGateway.Controllers
         }
         // GET: api/Payment
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<PaymentRecord> Get()
         {
-            return new string[] { "value1", "value2" };
+            var context = new PaymentsStorageContext();
+            var payments = context.PaymentRecords.AsEnumerable();
+
+            return payments;
         }
 
         // GET: api/Payment/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(string id)
+        public PaymentRecord Get(string id)
         {
             Guid paymentIdentifier = new Guid(id);
 
-            return "value";
+            var context = new PaymentsStorageContext();
+            var payments = context.PaymentRecords
+                .Where(s => s.Identifier == id).FirstOrDefault();
+                                              
+            return payments;
         }
 
         // POST: api/Payment
         [HttpPost]
-        public string Post([FromBody] PaymentInformation paymentInformation)
+        public PaymentResponse Post([FromBody] PaymentInformation paymentInformation)
         {
             EncryptedPaymentInformation encryptedPaymentInformation = new EncryptedPaymentInformation();
             //Encrypt data before sending to bank
             encryptedPaymentInformation= EncryptData(paymentInformation);
 
-            string response = _bankService.PaymentRequest(encryptedPaymentInformation);
+            PaymentResponse response = _bankService.PaymentRequest(encryptedPaymentInformation);
+            using (var context = new PaymentsStorageContext())
+            {
+                var paymentRecord = new PaymentRecord()
+                {
+                    CardNo = paymentInformation.CardNo,
+                    Expiry = paymentInformation.Expiry,
+                    Status=response.Status,
+                    Identifier=response.Identifier
+
+                };
+                context.PaymentRecords.Add(paymentRecord);
+                context.SaveChanges();
+            }
+
             return response;
         }
 
