@@ -8,6 +8,7 @@ using PaymentGateway.Interfaces;
 using PaymentGateway.Models;
 using PaymentGateway.Repository;
 using PaymentGateway.Services;
+using Newtonsoft.Json;
 
 namespace PaymentGateway.Controllers
 {
@@ -16,6 +17,8 @@ namespace PaymentGateway.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly IBankService _bankService;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         public PaymentController(IBankService bankService)
         {
@@ -49,26 +52,37 @@ namespace PaymentGateway.Controllers
         [HttpPost]
         public PaymentResponse Post([FromBody] PaymentInformation paymentInformation)
         {
-            EncryptedPaymentInformation encryptedPaymentInformation = new EncryptedPaymentInformation();
-            //Encrypt data before sending to bank
-            encryptedPaymentInformation= EncryptData(paymentInformation);
-
-            PaymentResponse response = _bankService.PaymentRequest(encryptedPaymentInformation);
-            using (var context = new PaymentsStorageContext())
+            log.Info("POST-REQUEST:" + JsonConvert.SerializeObject( paymentInformation));
+            try
             {
-                var paymentRecord = new PaymentRecord()
+                EncryptedPaymentInformation encryptedPaymentInformation = new EncryptedPaymentInformation();
+                //Encrypt data before sending to bank
+                encryptedPaymentInformation = EncryptData(paymentInformation);
+
+                PaymentResponse response = _bankService.PaymentRequest(encryptedPaymentInformation);
+                using (var context = new PaymentsStorageContext())
                 {
-                    CardNo = paymentInformation.CardNo,
-                    Expiry = paymentInformation.Expiry,
-                    Status=response.Status,
-                    Identifier=response.Identifier
+                    var paymentRecord = new PaymentRecord()
+                    {
+                        CardNo = paymentInformation.CardNo,
+                        Expiry = paymentInformation.Expiry,
+                        Status = response.Status,
+                        Identifier = response.Identifier
 
-                };
-                context.PaymentRecords.Add(paymentRecord);
-                context.SaveChanges();
+                    };
+                    context.PaymentRecords.Add(paymentRecord);
+                    context.SaveChanges();
+                }
+                log.Info("POST-RESPONSE:" + JsonConvert.SerializeObject(response));
+                return response;
             }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message);
 
-            return response;
+                return null;
+            }
+           
         }
 
         
