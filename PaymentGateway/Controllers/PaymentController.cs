@@ -9,11 +9,13 @@ using PaymentGateway.Models;
 using PaymentGateway.Repository;
 using PaymentGateway.Services;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Cors;
 
 namespace PaymentGateway.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors]
     public class PaymentController : ControllerBase
     {
         private readonly IBankService _bankService;
