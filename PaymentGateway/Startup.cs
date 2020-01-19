@@ -28,7 +28,7 @@ namespace PaymentGateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<IBankService, MockBankProcessing>();
+            services.AddTransient<IBankService, MockBankProcessing>();
 
         }
 

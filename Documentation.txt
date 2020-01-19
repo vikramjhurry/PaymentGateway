@@ -1,6 +1,4 @@
 
-
-
 A simple encryption is done before transmitting payment to bank but can be improved to make it more complete.
 
 After being configured in startup.cs, MockBankProcessing of type IBankService is being injected into the controller. 
@@ -17,7 +15,7 @@ Whenever a payment is made the card information and identifier and status from b
 
 Payment request is done via POST on "api/payment" with the following JSON object:
 {
-	"CardNo":"SSSS",
+	"CardNo":"2345-2346-1289-9987",
 	"Expiry":"10/2016",
 	"Amount":23.4,
 	"Currency":"MRU",
@@ -28,9 +26,13 @@ Requesting a payment information is done on "api/payment/{identifier}" via GET a
 {
     "id": 2,
     "identifier": "7284f824-9b72-4a83-950f-1136f3c7e669",
-    "cardNo": "SSSS",
+    "cardNo": "************-9987",
     "expiry": "10/2016",
     "status": "SUCCESS"
 }
+
+logging with log4net has been added. The log file name can be changed in log4net.config.
+
+Unit tests test the api controller post method, and the cryptography service.
 
 Single Tier is used because of simplicity otherwise Multi-tier could to be used.

@@ -42,10 +42,11 @@ namespace PaymentGateway.Controllers
             Guid paymentIdentifier = new Guid(id);
 
             var context = new PaymentsStorageContext();
-            var payments = context.PaymentRecords
+            PaymentRecord payment = context.PaymentRecords
                 .Where(s => s.Identifier == id).FirstOrDefault();
-                                              
-            return payments;
+
+            payment.CardNo = payment.CardNo.Replace(payment.CardNo.Substring(0, 14), "*************");
+            return payment;
         }
 
         // POST: api/Payment
