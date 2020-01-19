@@ -1,0 +1,77 @@
+﻿@page
+@model PaymentClient.MakePaymentsModel
+@{
+    ViewData["Title"] = "MakePayments";
+}
+
+<h1>MakePayments</h1>
+<div class="row">
+
+    <div class="col-md-4">
+
+        <form method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+
+                <label asp-for="paymentInformation.CardNo" class="control-label"></label>
+
+                <input asp-for="paymentInformation.CardNo" class="form-control" />
+
+                <span asp-validation-for="paymentInformation.CardNo" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="paymentInformation.Expiry" class="control-label"></label>
+
+                <input asp-for="paymentInformation.Expiry" class="form-control" />
+
+                <span asp-validation-for="paymentInformation.Expiry" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="paymentInformation.Amount" class="control-label"></label>
+
+                <input asp-for="paymentInformation.Amount" class="form-control" />
+
+                <span asp-validation-for="paymentInformation.Amount" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="paymentInformation.Currency" class="control-label"></label>
+
+                <input asp-for="paymentInformation.Currency" class="form-control" />
+
+                <span asp-validation-for="paymentInformation.Currency" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="paymentInformation.CVV" class="control-label"></label>
+
+                <input asp-for="paymentInformation.CVV" class="form-control" />
+
+                <span asp-validation-for="paymentInformation.CVV" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group">
+
+                <input type="submit" value="Create" class="btn btn-primary" />
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
