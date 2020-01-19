@@ -1,3 +1,4 @@
+Documentation Notes for Payment Gateway.
 
 A simple encryption is done before transmitting payment to bank but can be improved to make it more complete.
 
@@ -35,7 +36,8 @@ logging with log4net has been added. The log file name can be changed in log4net
 
 Unit tests test the api controller post method, and the cryptography service.
 
-Single Tier is used because of simplicity otherwise Multi-tier could to be used.
+Single-tier is used because of simplicity otherwise Multi-tier could to be used.
 
 A client ASP.NET Core Razor page was added. To test, open two Visual Studio . In first one open PaymentGateway.sln , in second one open CLIENT.sln.
-Please make sure to replacce URL in MakePayments.cshtml.cs to match URL and port on which API is running.
+Please make sure to replacce URL in MakePayments.cshtml.cs to match URL and port on which API is running. When Client defautl page loads, 
+please click on Make Payments in top menu or on main page to launch page where a payment can be made.
